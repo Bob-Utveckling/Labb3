@@ -1,15 +1,23 @@
 package DrawShapesProgram;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -28,13 +36,16 @@ public class Controller {
     @FXML
     TextField shapePosX, shapePosY;
     @FXML
-    Button undoButton, redoButton;
+    Button undoButton, redoButton, saveAsPngButton;
 
     Model model = new Model();
 
     //the id, that refers to the shape active for interactions:
     public int currentActiveShapeId = -1;
     public String activeShapeIs = "oval"; //user selects a shape to draw
+
+    public int newShapeId = -1;
+
 
     /** if user has just clicked to draw a new shape,
      * change of shape property should not occur
@@ -56,8 +67,9 @@ public class Controller {
             //draw:
             draw();
             disableShapePropertyUpdate = false; //adding a shape occured, plus drawing. User can update shape!
-            //interact with last item in list, i.e. last shape:
-            currentActiveShapeId = model.getObservableList().size()-1;
+            //interact with shapes in list, initially, the Controller valued shapeId:
+            currentActiveShapeId = newShapeId;
+            System.out.println("-- new shape id:" + newShapeId);
             interactWithCurrentlySelectedObject(currentActiveShapeId);
 
             //ListView -- show list of Observed shapes.
@@ -77,7 +89,9 @@ public class Controller {
                             if (empty || shapevar == null) {
                                 setText(null);
                             } else {
-                                setText(shapevar.shapeType +
+                                setText(
+                                        shapevar.shapeId + ". " +
+                                        shapevar.shapeType +
                                         " at X: " +
                                         (int) shapevar.posX +
                                         ", Y: " +
@@ -87,19 +101,49 @@ public class Controller {
                     }
             );
 
+            /*
+            list1.getSelectionModel().selectedItemProperty().addListener(
+                    new ChangeListener<String>() {
+                        public void changed(ObservableValue<? extends String> ov,
+                                            String old_val, String new_val) {
+                            label1.setText(new_val);
+                        }}
+            );
+            */
+
+            //thanks to: https://stackoverflow.com/questions/40230840/after-observable-list-change-javafx8-listview-still-shows-portion-of-old-list
+            //with user selected list item, start interacting with item.
+            list1.getSelectionModel().selectedItemProperty().addListener(
+                    new ChangeListener<ShapeVariation>() {
+                        public void changed(ObservableValue<? extends ShapeVariation> ov,
+                                            ShapeVariation old_val, ShapeVariation new_val) {
+                            label1.setText(new_val.shapeType);
+                            currentActiveShapeId = new_val.shapeId;
+                            interactWithCurrentlySelectedObject(currentActiveShapeId);
+                            System.out.println("current active shape id has become: " + currentActiveShapeId);
+                        }
+                    }
+            );
+
+            /*
+            list1.getItems().addListener(new ListChangeListener() {
+                @Override
+                public void onChanged (ListChangeListener.Change change) {
+                    System.out.println("detected a change");
+                }
+            });
+            */
+
+            /*
+            list1.getSelectionModel().selectedItemProperty().addListener((
+                prop, old, new1 ) -> {
+                System.out.println("Ok");
+                System.out.println(prop.getClass());
+                System.out.println(old);
+                System.out.println(new1.getClass());
+            });
+            */
         });
-
-        //});
-        //model.getObservableList().addListener((ListChangeListener<Point2D>) c ->
-        //        System.out.println("c: " + c));
-
-
-        //        model.getObservableList().addListener(new ListChangeListener() {
-        //          @Override
-        //        public void onChanged(ListChangeListener.Change change) {
-        //          System.out.println("test");
-        //    }
-        //});
 
     }
 
@@ -122,7 +166,10 @@ public class Controller {
         int listSize = model.getObservableList().size();
         System.out.println("working with: " +model.getObservableList());
         try {
+            System.out.println("remove last object...");
             model.getObservableList().remove(listSize - 1);
+            newShapeId = newShapeId - 1; //bug because newshapeId is changed via addListener
+            System.out.println("new shape id: " + newShapeId);
             if (model.getObservableList().size() == 0) { undoButton.setDisable(true);}
             System.out.println("working actual: " + model.getObservableList());
             System.out.println("original: " + originalNotObservedListOfShapes);
@@ -177,47 +224,40 @@ public class Controller {
      */
     public void updateTheShapePosY() {
         if (!disableShapePropertyUpdate) {
-            System.out.println("current shape id:" + currentActiveShapeId);
-            double newPosY;
-            String getPosY = shapePosY.getText();
+            System.out.println("update pos Y. active shape id:" + currentActiveShapeId);
+            String givenPosY = shapePosY.getText();
             try {
-                newPosY = Double.parseDouble(getPosY);
-                System.out.println("new pos Y: " + getPosY);
-                ShapeVariation shapeToUpdate = model.getObservableList().get(currentActiveShapeId);
-                shapeToUpdate.posY = newPosY;
+                double okPosY = Double.parseDouble(givenPosY);
+                model.getObservableList().get(currentActiveShapeId).posY = okPosY;
                 draw();
                 highlightTheSelectedObject(currentActiveShapeId);
             } catch (Exception e) {
-                System.out.println("wrong value type. No change made to shape value y");
+                System.out.println("Wrong value." +
+                        "No change made to shape value y. " +
+                        e);
             }
         }
     }
 
-    /** on change of value for position x
-     / update the current object's position x
+    /** on change of value for position x with a new x
+     / call function to update the current shape's position x
      */
     public void updateTheShapePosX() {
         if (!disableShapePropertyUpdate) {
-            System.out.println("current shape id:" + currentActiveShapeId);
-            double newPosX;
-            String getPosX = shapePosX.getText();
-            //if (!getPosx.matches("\\d*")) {
-            //    getPosx = getPosx.replaceAll("[^\\d]", "");
-            //    //double newPosX = (double) getPosx;
-            //}
+            System.out.println("update pos X. active shape id:" + currentActiveShapeId);
+            String givenPosX = shapePosX.getText();
             try {
-                newPosX = Double.parseDouble(getPosX);
-                System.out.println("new pos X: " + getPosX);
-                ShapeVariation shapeToUpdate = model.getObservableList().get(currentActiveShapeId);
-                shapeToUpdate.posX = newPosX;
+                double okPosX = Double.parseDouble(givenPosX);
+                model.getObservableList().get(currentActiveShapeId).posX = okPosX;
                 draw();
                 highlightTheSelectedObject(currentActiveShapeId);
             } catch (Exception e) {
-                System.out.println("wrong value type. No change made to shape value x");
+                System.out.println("Wrong value." +
+                        "No change made to shape value x. " +
+                        e);
             }
         }
     }
-
 
     /** on change of slider for size y (height)
     / update the current object's height
@@ -334,6 +374,7 @@ public class Controller {
     public void resetCanvas (ActionEvent actionEvent) {
 
         originalNotObservedListOfShapes.clear(); //clear the original copy object. helps with undo/redo
+        newShapeId = -1;
         redoButton.setDisable(true);
         undoButton.setDisable(true);
 
@@ -378,6 +419,7 @@ public class Controller {
         //mechanism to know what kind of object to draw:
         // add shapeType + shape object to ShapeVariation
         ShapeVariation newShape = new ShapeVariation(
+                ++newShapeId,
                 activeShapeIs,
                 event.getX(), event.getY(),
                 sizeSliderX.getValue(), sizeSliderY.getValue(),

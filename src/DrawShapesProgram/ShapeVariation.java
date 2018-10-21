@@ -16,10 +16,17 @@ public class ShapeVariation extends Shape {
     //count all shapes and access any shape with this count.
     public int shapeIdWithCounting = -1;
 
+    //new shape id that will be the main id
+    public int shapeId;
+
+    //Constructor
+    public ShapeVariation() {}
 
     //Constructor
     //can have different constructors depending on shape
-    public ShapeVariation (String givenShapeType, double getX, double getY, double width, double height, Color givenColor) {
+    public ShapeVariation (int givenShapeId, String givenShapeType, double getX, double getY, double width, double height, Color givenColor) {
+        this.shapeId = givenShapeId;
+
         switch (givenShapeType) {
             case "rectangle":
                 System.out.println("now making a rectangle shape variation");
@@ -41,9 +48,9 @@ public class ShapeVariation extends Shape {
         this.posX = getX;
         this.posY = getY;
         this.shapeIdWithCounting ++;
-        System.out.println("shape id set to: "
+        System.out.println("shapeIdWithCounting set to: "
             + this.shapeIdWithCounting);
-
+        System.out.println("created shape with id: " + this.shapeId);
     }
 
 }

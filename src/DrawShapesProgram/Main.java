@@ -24,7 +24,7 @@ public class Main extends Application {
         //Scene scene = new Scene (root, 500, 500);
         //scene.getStylesheets().add(getClass().getResource("CSS/CSS.css").toExternalForm());
 
-        stage.setTitle("Bobs enkel ritprogram");
+        stage.setTitle("Det enkla ritprogrammet");
         stage.setScene(new Scene(root));
         stage.show();
     }
