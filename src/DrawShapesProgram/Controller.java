@@ -95,7 +95,7 @@ public class Controller {
                                 setText(null);
                             } else {
                                 setText(
-                                        shapevar.shapeId + ". " +
+                                        shapevar.shapeId + 1 + ". " +
                                         shapevar.shapeType +
                                         " at X: " +
                                         (int) shapevar.posX +

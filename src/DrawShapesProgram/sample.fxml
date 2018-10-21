@@ -145,7 +145,7 @@
    <left>
       <ListView fx:id="list1" prefHeight="383.0" prefWidth="144.0" BorderPane.alignment="CENTER">
         <placeholder>
-            <Label text="No object drawn yet" />
+            <Label text="No object drawn" />
         </placeholder>
       </ListView>
    </left>
