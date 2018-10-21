@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -17,6 +20,8 @@ import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -217,6 +222,58 @@ public class Controller {
         }
     }
 
+
+    public void saveAs() {
+        System.out.println("Save as...");
+
+        //Create a file chooser
+
+        JFileChooser fileChooser = new JFileChooser();
+
+        //...
+        //if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION ) {
+        //    File file = fileChooser.getSelectedFile();
+        //    // save to file
+        //}
+        SaveTest.run(new SaveTest(), 250, 110);
+
+
+    }
+
+    /*
+    run(new FileSaver(), 250, 110);
+    public static void run (JFrame frame, int width, int height)
+
+    {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(width, height);
+        frame.setVisible(true);
+    }
+    */
+
+
+    public void saveAsPng() {
+        System.out.println("Saving as png file...");
+        //GraphicsContext gc = canvas.snapshot()
+        //GraphicsContext gc = canvas.getGraphicsContext2D();
+        WritableImage wim = new WritableImage( (int) canvas.getWidth(), (int) canvas.getHeight());
+        //...WritableImage image = model.getObservableList().
+        canvas.snapshot(null,wim);
+        //String pathname = "/Users/Bob/Desktop/CanvasImage.png";
+        String pathname = "CanvasImage.png";
+        File file = new File(pathname);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", file);
+            System.out.println("saved png file: " + pathname);
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+        }
+    }
+
+    public void saveAsSvg() {
+        System.out.println("save as Svg");
+
+    }
 
 
     /** on change of value for position y

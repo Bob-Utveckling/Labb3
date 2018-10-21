@@ -17,13 +17,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DrawShapesProgram.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DrawShapesProgram.Controller">
     <top>
         <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="548.0">
          <children>
             <HBox prefHeight="100.0" prefWidth="335.0">
                <children>
-                  <ToolBar prefHeight="42.0" prefWidth="651.0">
+                  <ToolBar prefHeight="42.0" prefWidth="795.0">
                     <items>
                       <Button mnemonicParsing="false" onAction="#resetCanvas" text="New Canvas">
                            </Button>
@@ -46,18 +46,20 @@
                             </ImageView>
                         </graphic>
                         </Button>
-                        <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="73.0" />
+                        <Separator orientation="VERTICAL" prefHeight="32.0" prefWidth="64.0" />
                         <Label text="Draw a new:" />
                            <Button mnemonicParsing="false" onAction="#setActiveShapeAsPoint" text="Point" textAlignment="CENTER" />
                            <Button mnemonicParsing="false" onAction="#setActiveShapeAsOval" text="Oval" />
                            <Button mnemonicParsing="false" onAction="#setActiveShapeAsRectangle" text="Rectangle" />
+                        <Separator orientation="VERTICAL" prefHeight="32.0" prefWidth="43.0" />
+                        <Button mnemonicParsing="false" onAction="#saveAsPng" text="png" />
+                        <Button mnemonicParsing="false" onAction="#saveAsSvg" text="svg" />
+                        <Button mnemonicParsing="false" onAction="#saveAs" text="Save as" />
                     </items>
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </ToolBar>
-                  <Button mnemonicParsing="false" onAction="#saveAsPng" text="png" />
-                  <Button mnemonicParsing="false" onAction="#saveAsSvg" text="svg" />
                </children>
             </HBox>
             <HBox prefHeight="113.0" prefWidth="600.0"> <!-- Properties for different shapes. Interaction menu is here -->
@@ -126,7 +128,7 @@
         </VBox>
     </top>
     <center>
-    <Canvas fx:id="canvas" height="344.0" onMouseClicked="#canvasClicked" onMouseMoved="#followMouseAndShowDetails" width="580.0" />
+    <Canvas fx:id="canvas" height="368.0" onMouseClicked="#canvasClicked" onMouseMoved="#followMouseAndShowDetails" width="611.0" />
     </center>
     <bottom>
         <HBox>
