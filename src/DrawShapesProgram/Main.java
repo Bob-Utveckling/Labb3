@@ -1,3 +1,13 @@
+
+/**
+ * Draw Simple Shapes Program. Det enkla ritprogrammet.
+ *  hos Martin Blomberg. https://github.com/kappsegla
+ *  Java Programmering Kurs Labb 3.
+ *  Finns på GitHub: https://github.com/Bob-Utveckling/Labb3
+ *  24 okt 2018 21.03, av Bob L.
+*/
+
+
 package DrawShapesProgram;
 
 import javafx.application.Application;
