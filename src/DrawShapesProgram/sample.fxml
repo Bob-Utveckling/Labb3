@@ -23,7 +23,7 @@
          <children>
             <HBox prefHeight="100.0" prefWidth="335.0">
                <children>
-                  <ToolBar prefHeight="42.0" prefWidth="795.0">
+                  <ToolBar prefHeight="48.0" prefWidth="806.0">
                     <items>
                       <Button mnemonicParsing="false" onAction="#resetCanvas" text="New Canvas">
                            </Button>

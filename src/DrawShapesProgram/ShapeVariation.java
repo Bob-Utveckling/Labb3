@@ -53,4 +53,44 @@ public class ShapeVariation extends Shape {
         System.out.println("created shape with id: " + this.shapeId);
     }
 
+    public String toSvgString() {
+        String svgColor = this.color.toString();
+        svgColor = "#" + svgColor.substring(2);
+        System.out.println("SVG Color: " + svgColor);
+        if (this.shapeType == "rectangle") {
+            /*System.out.println ("<rect x = '" + this.posX + "' " +
+                    "y = '" + this.posY + "' " +
+                    "width = '" + this.rectangle.width + "' " +
+                    "height = '" + this.rectangle.height + "' " +
+                    "fill = '" + this.color + "' / >");
+            */
+            // <rect x = "25" y = "25" width = "150" height = "150" fill = "orange" / >
+
+
+            return ("<rect x = '" + this.posX + "' " +
+                    "y = '" + this.posY + "' " +
+                    "width = '" + this.rectangle.width + "' " +
+                    "height = '" + this.rectangle.height + "' " +
+                    "fill = '" + svgColor + "' />");
+
+            // <rect x = "25" y = "25" width = "150" height = "150" fill = "orange" / >
+        } else if (this.shapeType == "oval") {
+            return ("<ellipse cx = '" + this.posX + "' " +
+                    "cy = '" + this.posY + "' " +
+                    "rx = '" + this.oval.width + "' " +
+                    "ry = '" + this.oval.height + "' " +
+                    "fill = '" + svgColor + "' />");
+            // <circle cx="50" cy="50" r="40" fill="red" />
+        } else if (this.shapeType == "point") {
+            return ("<ellipse cx = '" + this.posX + "' " +
+                    "cy = '" + this.posY + "' " +
+                    "rx = '" + this.oval.width + "' " +
+                    "ry = '" + this.oval.height + "' " +
+                    "fill = '" + svgColor + "' />");
+            // <circle cx="50" cy="50" r="40" fill="red" />
+            //System.out.println("object's svg to string...");
+        }
+        return ("Shape not recognized. toSvgString empty");
+    }
+
 }

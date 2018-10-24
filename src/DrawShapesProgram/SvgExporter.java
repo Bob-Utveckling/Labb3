@@ -13,5 +13,6 @@ public class SvgExporter implements FileExporter {
     @Override
     public void saveToFile(File file, List<ShapeVariation> shapeList) {
         //add code for svg format exporting
+        System.out.println("save as svg... Svg Exporter");
     }
 }

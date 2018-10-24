@@ -15,5 +15,6 @@ public class PngExporter implements FileExporter {
     public void saveToFile(File file, List<ShapeVariation> shapeList) {
         //add code to save as png
         //...WritebleImage
+        System.out.println("save as png... Png Exporter");
     }
 }
