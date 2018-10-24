@@ -2,7 +2,7 @@ package DrawShapesProgram;
 
 /* NOT ACCESSED IN PROGRAM. FOR WORK, LATER ON.
     A class in order to organize shape update
-    on new changes, later on.
+    on new changes
  */
 
 import javafx.collections.ObservableList;

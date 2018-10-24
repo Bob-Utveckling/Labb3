@@ -52,9 +52,7 @@
                            <Button mnemonicParsing="false" onAction="#setActiveShapeAsOval" text="Oval" />
                            <Button mnemonicParsing="false" onAction="#setActiveShapeAsRectangle" text="Rectangle" />
                         <Separator orientation="VERTICAL" prefHeight="32.0" prefWidth="43.0" />
-                        <Button mnemonicParsing="false" onAction="#saveAsPng" text="png" />
-                        <Button mnemonicParsing="false" onAction="#saveAsSvg" text="svg" />
-                        <Button mnemonicParsing="false" onAction="#saveAs" text="Save as" />
+                        <Button mnemonicParsing="false" onAction="#saveAs" text="Save as..." />
                     </items>
                      <opaqueInsets>
                         <Insets />

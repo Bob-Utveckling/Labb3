@@ -227,6 +227,10 @@ public class Controller {
     }
 
 
+    /** Open a dialog box to give alternative
+     * to save canvas either as an SVG XML based image
+     * or PNG Snapshot of canvas
+     */
     public void saveAs() {
         System.out.println("Save as...");
         FileChooser fileChooser = new FileChooser();
@@ -245,60 +249,28 @@ public class Controller {
         File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
 
         if (file.getName().endsWith(".png")) {
-            System.out.println("Start png strategy, " +
-                    "saving " + file.getName() + "...");
+            System.out.println("Start png strategy, saving '" + file.getName() + "'...");
             //(!) can, instead of passing detailed parameters like
             //canvas, do a call that is similar in all strategies
             //for example: all strategies take a File path and a ListOfShapes.
             WritableImage wim = new WritableImage( (int) canvas.getWidth(), (int) canvas.getHeight());
-            // canvas.snapshot(null,wim);
-            System.out.println(("class of object" +
-                    "to be passed on is: " +  canvas.snapshot(null,wim)).getClass());
+            System.out.println(("class of object to be passed on is: " +
+                    canvas.snapshot(null,wim)).getClass());
             new SavePngStrategy().save(
                     canvas.snapshot(null,wim)
                     , file.getPath());
 
-
         } else if (file.getName().endsWith(".svg")) {
-            System.out.println(
-                    "Start Svg strategy, " +
-                    "saving " + file.getName() + "...");
+            System.out.println("Start Svg strategy, saving " + file.getName() + "...");
             new SaveSvgStrategy().save(model.getObservableList(),
                     canvas.getWidth(),
                     canvas.getHeight(),
                     file.getPath()
             );
-
-
-            //SaveSvgStrategy(model.getObservableList(),);
-            //new SaveSvgStrategy().save(null, file);
         }
-        //Create a file chooser
-
-        //////JFileChooser fileChooser = new JFileChooser();
-
-        //...
-        //if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION ) {
-        //    File file = fileChooser.getSelectedFile();
-        //    // save to file
-        //}
-        ///////SaveTest.run(new SaveTest(), 250, 110);
-
-
     }
 
-    /*
-    run(new FileSaver(), 250, 110);
-    public static void run (JFrame frame, int width, int height)
-
-    {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(width, height);
-        frame.setVisible(true);
-    }
-    */
-
-
+    /*OBSOLETE code:
     public void saveAsPng() {
         System.out.println("Saving as png file...");
         //GraphicsContext gc = canvas.snapshot()
@@ -315,9 +287,10 @@ public class Controller {
         } catch (Exception e) {
             System.out.println("error: " + e);
         }
-
     }
+    */
 
+    /* OBSOLETE Code:
     public void saveAsSvg() {
         System.out.println("save as Svg");
         String pathname = "/Users/Bob/Desktop/CanvasImage.svg";
@@ -349,6 +322,7 @@ public class Controller {
             }
         }
     }
+    */
 
 
     /** on change of value for position y
@@ -503,8 +477,8 @@ public class Controller {
     }
 
 
+    /** do a new canvas */
     public void resetCanvas (ActionEvent actionEvent) {
-
         originalNotObservedListOfShapes.clear(); //clear the original copy object. helps with undo/redo
         newShapeId = -1;
         redoButton.setDisable(true);
@@ -516,7 +490,9 @@ public class Controller {
         System.out.println("after: " + model.getObservableList());
     }
 
-
+    /** set the active shape to
+     *  "a rectangle" for user interaction
+     */
     public void setActiveShapeAsRectangle(ActionEvent actionEvent) {
         disableShapePropertyUpdate = true; //disable shape property change. this is a new shape
         activeShapeIs = "rectangle"; //System.out.println("Rectangle");
@@ -526,6 +502,9 @@ public class Controller {
 
     }
 
+    /** set the active shape to
+     * "an oval" for user interaction
+     */
     public void setActiveShapeAsOval(ActionEvent actionEvent) {
         disableShapePropertyUpdate = true; //disable shape property change. this is a new shape
         activeShapeIs = "oval"; //System.out.println("Rectangle");
@@ -534,6 +513,9 @@ public class Controller {
         draw();
     }
 
+    /** set the active shape to
+     * "a point" for user interaction
+     */
     public void setActiveShapeAsPoint(ActionEvent actionEvent) {
         disableShapePropertyUpdate = true; //disable shape property change. this is a new shape
         activeShapeIs = "point"; //System.out.println("Rectangle");

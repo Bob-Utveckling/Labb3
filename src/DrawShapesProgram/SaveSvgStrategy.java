@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SaveSvgStrategy {
     public void save(List<ShapeVariation> shapeList, double canvasWidth, double canvasHeight, String filePath) {
-        System.out.println("Saving as Svg...");
+        System.out.println("Saving Svg file...");
         String SvgFileContent;
         SvgFileContent = "" +
                 "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
@@ -17,16 +17,18 @@ public class SaveSvgStrategy {
                 canvasWidth + "\" height=\"" + canvasHeight + "\" version=\"1.1\" >\n" +
                 "";
         for (ShapeVariation shape: shapeList) {
-            System.out.println("adding shape...");
+            System.out.println("adding shape to Svg content...");
             SvgFileContent += shape.toSvgString() + "\n";
         }
         SvgFileContent += "" +
                 "</svg>";
-        System.out.println("File Content: " + SvgFileContent);
+
+        System.out.println("Finished. File Content:\n " + SvgFileContent);
         OutputStream os = null;
         try {
             os = new FileOutputStream(new File(filePath));
             os.write(SvgFileContent.getBytes(), 0, SvgFileContent.length());
+            System.out.println("Saved .svg file: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
