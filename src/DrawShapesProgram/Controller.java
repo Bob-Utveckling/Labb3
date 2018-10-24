@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -228,17 +229,60 @@ public class Controller {
 
     public void saveAs() {
         System.out.println("Save as...");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
 
+        String path = System.getProperty("user.home") + File.separator;
+        File initialDir = new File(path);
+        fileChooser.setInitialDirectory(initialDir);
+
+        FileChooser.ExtensionFilter filter =
+                new FileChooser.ExtensionFilter("PNG-image (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(filter);
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("SVG-image (*.svg)", "*.svg"));
+
+        File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+
+        if (file.getName().endsWith(".png")) {
+            System.out.println("Start png strategy, " +
+                    "saving " + file.getName() + "...");
+            //(!) can, instead of passing detailed parameters like
+            //canvas, do a call that is similar in all strategies
+            //for example: all strategies take a File path and a ListOfShapes.
+            WritableImage wim = new WritableImage( (int) canvas.getWidth(), (int) canvas.getHeight());
+            // canvas.snapshot(null,wim);
+            System.out.println(("class of object" +
+                    "to be passed on is: " +  canvas.snapshot(null,wim)).getClass());
+            new SavePngStrategy().save(
+                    canvas.snapshot(null,wim)
+                    , file.getPath());
+
+
+        } else if (file.getName().endsWith(".svg")) {
+            System.out.println(
+                    "Start Svg strategy, " +
+                    "saving " + file.getName() + "...");
+            new SaveSvgStrategy().save(model.getObservableList(),
+                    canvas.getWidth(),
+                    canvas.getHeight(),
+                    file.getPath()
+            );
+
+
+            //SaveSvgStrategy(model.getObservableList(),);
+            //new SaveSvgStrategy().save(null, file);
+        }
         //Create a file chooser
 
-        JFileChooser fileChooser = new JFileChooser();
+        //////JFileChooser fileChooser = new JFileChooser();
 
         //...
         //if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION ) {
         //    File file = fileChooser.getSelectedFile();
         //    // save to file
         //}
-        SaveTest.run(new SaveTest(), 250, 110);
+        ///////SaveTest.run(new SaveTest(), 250, 110);
 
 
     }
