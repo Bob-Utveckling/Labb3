@@ -28,7 +28,7 @@ public class SaveSvgStrategy {
         try {
             os = new FileOutputStream(new File(filePath));
             os.write(SvgFileContent.getBytes(), 0, SvgFileContent.length());
-            System.out.println("Saved .svg file: " + filePath);
+            System.out.println("Saved .svg file: '" + filePath + "'");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
